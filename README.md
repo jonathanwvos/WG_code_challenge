@@ -1,11 +1,44 @@
 # WG_code_challenge
 ## Setup
-For this challenge I used Python Anaconda for the environment and pip for dependency management.
+For this challenge I used Python Anaconda for the environment and pip for dependency management. To create a new environment, execute the following in terminal:
+```
+conda create -n wg_code_challenge
+```
+Then activate the environment:
+```
+conda activate wg_code_challenge
+```
+and finally, install dependencies:
+```
+pip install -r requirements.txt
+```
 
 ## Question 1
 This is a coding task that involves finding the missing integer in a shuffled set of contiguous integers. The input contains a flat file that presents the series in the following format: 
 There are multiple problems within a file. Individual problems are delimited with a header. The header is a greater than character $>$ followed by an integer $N$ as a header line. An example header is: $>10$. The value $N$ indicates the size of the set. Following this is a series of $N - 1$ integers which can span multiple lines.
 
+### Solution
+To run the solution for question one, execute the following command in terminal, from the project directory:
+```
+python question_one.py -f ABSOLUTE_FILE_PATH
+```
+where the `ABSOLUTE_FILE_PATH` is the absolute file path to the integer sequence input file. By default, the supplied file (`question_one.txt`) is called, with the following:
+```
+python question_one.py
+```
+
+Output results will have the following format:
+```
+Missing element: ELEMENT_NUMBER
+...
+```
+for each sequence in the file.
+
+### Testing
+To run the test suite, execute the following command in terminal, from the project directory:
+```
+python test_question_one.py
+```
 
 ## Question 2 
 This involves finding a 2x copy number gain. The problem folder attached contains a mock reference genome, a .bed file containing mock gene annotations, a set of baseline reads (which don't contain the copy number gain), a set of reads where one of the annotations has a 2x copy gain and thus a significant change to the depth of coverage. This task involves finding which annotation contains that gain. 
