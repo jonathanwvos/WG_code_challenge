@@ -1,6 +1,6 @@
 # WG_code_challenge
 ## Setup
-For this challenge I used the Python Anaconda and pip.
+For this challenge I used Python Anaconda for the environment and pip for dependency management.
 
 ## Question 1
 This is a coding task that involves finding the missing integer in a shuffled set of contiguous integers. The input contains a flat file that presents the series in the following format: 

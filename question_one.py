@@ -1,6 +1,7 @@
 from argparse import ArgumentParser
 from dataclasses import dataclass, field
 
+
 parser = ArgumentParser()
 parser.add_argument(
     '-f',
@@ -20,6 +21,18 @@ class IntegerSequence:
     
 
 class IntegerSequenceReader:
+    class InvalidHeaderError(Exception):
+        def __init__(self):
+            super().__init__('Header value must be greater than 1.')
+            
+    class InvalidLengthError(Exception):
+        def __init__(self):
+            super().__init__('Sequence must have same length as header.')
+            
+    class NotContiguousError(Exception):
+        def __init__(self):
+            super().__init__('Duplicate element(s) found. Sequence is not contiguous.')
+    
     '''
     Reads an integer sequence file with format:
     >N
@@ -30,8 +43,30 @@ class IntegerSequenceReader:
         self.filepath = filepath
         self.sequences = []
         self.parse_file()
+        
+    def create_integer_sequence(self, header: str) -> IntegerSequence:
+        '''Creates and validates an IntegerSequence.'''
+        
+        # Extract length from header
+        len = header.replace('>', '').strip()
+        len = int(len)
+        
+        # Validate length
+        if len in [0, 1]:
+            raise IntegerSequenceReader.InvalidHeaderError()
+        
+        return IntegerSequence(length=len)
+
+    def validate_integer_sequences(self):
+        '''Validate all sequence lengths and ensure no element duplication.'''
+        
+        for seq in self.sequences:
+            if seq.length != len(seq.sequence):
+                raise IntegerSequenceReader.InvalidLengthError()
 
     def parse_file(self):
+        '''Parse integer sequence file and initial sequences.'''
+        
         try:
             with open(self.filepath, 'r') as f:
                 new_seq = None
@@ -41,16 +76,15 @@ class IntegerSequenceReader:
                         if new_seq:
                             self.sequences.append(new_seq)
                         
-                        new_seq = IntegerSequence()
-                        
-                        len = line.replace('>', '').strip()
-                        new_seq.length = int(len)
+                        new_seq = self.create_integer_sequence(line)
                     else:
                         seq = line.strip()
                         seq = seq.split(' ')
                         new_seq.sequence.extend(map(int, seq))
                         
                 self.sequences.append(new_seq)
+                
+            self.validate_integer_sequences()    
                     
         except FileNotFoundError:
             print(f'File path: {self.filepath}, does not exist!')
