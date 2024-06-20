@@ -11,7 +11,7 @@ parser.add_argument(
     '--file-path',
     type=str,
     help='The file path to integer sequence input.',
-    default=join(dirname(realpath(__file__)), 'question_one.txt')
+    default=join(dirname(realpath(__file__)), 'data', 'question_one.txt')
 )
 args = parser.parse_args()
 
