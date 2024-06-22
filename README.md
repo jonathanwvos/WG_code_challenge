@@ -57,16 +57,71 @@ Find the region in the toy genome with 2x copy number gain.
     * Readings do not contain optical duplications.
 
 ### Strategy 1
-Steps:
-1. Use existing Burrows-Wheeler implementation to align reads with reference genome.
-2. Use Sequence Alignment Map tools to determine depth of coverage.
+The steps to accomplish the task are as follows:
+1. Use existing Burrows-Wheeler implementation (bwa) to align reads with reference genome.
+2. Use Sequence Alignment Map tools (samtools) to determine depth of coverage.
 3. Normalize coverage distributions so that samples can be reliably compared.
 4. Determine copy number for coverage distributions.
 5. Apply bounded filter to remove regions not of interest.
 6. Examine positions of gains within region interest.
 7. Correlate largest contiguous region with gene annotations to find most relevant gene. This will most likely be the gene where the copy gain occurred.
 
-Refer to the `Question 2 - Strategy 1` notebook for the implementation.
+Steps 1 and 2 were executed using command line tools in WSL Ubuntu.
+
+#### Step 1 - Align Reads
+First, I installed the bwa command line tool.
+```shell
+# Update references
+sudo apt update
+
+# Install BWA
+sudo apt install bwa
+```
+
+From this I indexed the toy genome so that reads can be appropriately aligned. Then the baseline and modified reads were aligned separately.
+
+```shell
+# Create Toy Genome Indices
+bwa index toy_genome.fa
+
+# Create Baseline Reads Alignment
+bwa mem toy_genome.fa baseline_reads_R1.fastq baseline_reads_R2.fastq | gzip -3 > baseline_alignment.sam.gz
+
+# Create Modified Reads Alignment
+bwa mem toy_genome.fa reads_R1.fastq reads_R2.fastq | gzip -3 > modified_alignment.sam.gz
+```
+
+#### Step 2 - Determine Coverage Depth
+First, I installed samtools.
+
+```shell
+# Install Samtools
+sudo apt install samtools
+```
+
+Then I converted the alignments to a binary format, which was necessary for sorting.
+
+```shell
+# Convert SAM to BAM
+samtools view -S -b baseline_alignment.sam.gz > baseline_alignment.bam.gz
+samtools view -S -b modified_alignment.sam.gz > modified_alignment.bam.gz
+
+# Sort BAM files
+samtools sort baseline_alignment.bam.gz -o sorted_baseline_alignment.bam.gz
+samtools sort modified_alignment.bam.gz -o sorted_modified_alignment.bam.gz
+```
+
+Finally, I calculated the coverage depth for each alignment separately.
+
+```shell
+# Determine depth of coverage
+samtools depth -a sorted_baseline_alignment.bam.gz > baseline_coverage.txt
+samtools depth -a sorted_modified_alignment.bam.gz > modified_coverage.txt
+```
+
+Steps 3-7 of the solution continue in the `Question 2 - Strategy 1` jupyter notebook.
+
+**NOTE:** All files generated in the solution pipeline are included in the `data` directory as proof that the solution was executed as documented.
 
 ### Strategy 2
 Create custom tools to align reads and compare maps to determine where 2x copy gain is located.

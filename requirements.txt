@@ -2,5 +2,6 @@ numpy
 tqdm
 miniFasta
 fastq
-jupyter-notebook
+jupyter
 pandas
+matplotlib
