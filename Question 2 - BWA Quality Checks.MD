@@ -2,7 +2,7 @@
 Using the `samtools` command line utility, we can draft statistics of the baseline and modified alignment steps. Doing so will endow us with confidence that subsequent steps in the analyis are reliable.
 
 ## Baseline Alignment
-The following command was used to generate read alignemnt stats for baseline reads.
+The following command was used to generate read alignment stats for baseline reads.
 
 ```shell
 samtools flagstat baseline_alignment.bam.gz
@@ -60,7 +60,7 @@ Yielding similar, unsurprising results!
 0 + 0 with mate mapped to a different chr (mapQ>=5)
 ```
 
-It is safe to say that the alignment can be properly relied on in subsequent steps in the analysis.
+Our assumption that there are no optical duplications or PCR enhancements is validated in both outputs, since there are no duplicate reads.
 
 # Mapping Quality
 In addition to alignment quality, we can also inspect the mapping quality of reads to reference genome. Once again, we use `samtools` to assist in the analysis.
@@ -85,7 +85,7 @@ The following was copied from the `baseline_mapq_distribution.txt` file:
 199927 60
 ```
 
-All reads have high scores, with only 5 scoring below 60.
+All reads have high scores, with only 5 scoring just below 60. Resulting in 100% high quality mappings.
 
 ## Modified Alignment
 Similarly, for the modified reads alignment:
@@ -102,4 +102,7 @@ The following was copied from the `modified_mapq_distribution.txt` file:
     3 58
 201088 60
 ```
-The vast majority of reads have high scores, with only 4 scoring just below 60, and 2 scoring 0.
+The vast majority of reads have high scores, with only 4 scoring just below 60, and 2 scoring 0. Resulting in 99.998% high quality mappings.
+
+# Conclusion
+It is safe to say that the alignments and mappings can be relied on during subsequent steps in the analysis.

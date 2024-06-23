@@ -13,6 +13,21 @@ and finally, install dependencies:
 pip install -r requirements.txt
 ```
 
+The next few tools will need a linux distribution to run, though a Mac or WSL instance would be more than sufficient.
+
+```shell
+# Update references
+sudo apt update
+
+# Install BWA
+sudo apt install bwa
+
+# Install Samtools
+sudo apt install samtools
+```
+
+`bwa` and `samtools` will be used for reads alignment and depth of coverage calculation in Question 2.
+
 ## Question 1
 This is a coding task that involves finding the missing integer in a shuffled set of contiguous integers. The input contains a flat file that presents the series in the following format: 
 There are multiple problems within a file. Individual problems are delimited with a header. The header is a greater than character $>$ followed by an integer $N$ as a header line. An example header is: $>10$. The value $N$ indicates the size of the set. Following this is a series of $N - 1$ integers which can span multiple lines.
@@ -57,27 +72,18 @@ Find the region in the toy genome with 2x copy number gain.
     * Readings do not contain optical duplications.
 
 ### Methodology
-<!-- The steps to accomplish the task are as follows:
+The steps to accomplish the task are as follows:
 1. Use existing Burrows-Wheeler implementation (bwa) to align reads with reference genome.
-2. 
+2. Perform quality checks on alignments and mappings.
 3. Use Sequence Alignment Map tools (samtools) to determine depth of coverage.
 4. Normalize coverage distributions so that samples can be reliably compared.
 5. Determine copy number for coverage distributions.
-6. Extract region of interest and correlate with gene annotations. -->
+6. Extract region of interest and correlate with gene annotations.
 
-<!-- Steps 1 and 2 were executed using command line tools in WSL Ubuntu. -->
+Steps 1 to 3 were executed using command line tools in WSL Ubuntu.
 
 #### Step 1 - Align Reads
-First, I installed the bwa command line tool.
-```shell
-# Update references
-sudo apt update
-
-# Install BWA
-sudo apt install bwa
-```
-
-From this I indexed the toy genome so that reads can be appropriately aligned. Then the baseline and modified reads were aligned separately.
+Use `bwa` to index the toy genome so that reads can be appropriately aligned. Then the baseline and modified reads were aligned separately.
 
 ```shell
 # Create Toy Genome Indices
@@ -91,17 +97,10 @@ bwa mem toy_genome.fa reads_R1.fastq reads_R2.fastq | gzip -3 > modified_alignme
 ```
 
 #### Step 2 - Compute Alignment Statistics and Validity
-Despite the toy genome being a well-behaved and relatively simple example, it's worth it to draft some alignment statitics to determine if the sub-sequent steps will be valid. For the full report, refer to `Question 2 - BWA Alignment QA.MD`.
+Despite the toy genome being a well-behaved and relatively simple example, it's worth it to draft some alignment statitics to determine if the sub-sequent steps will be valid. For the full report, refer to `Question 2 - BWA Quality Checks.MD`.
 
 #### Step 3 - Determine Coverage Depth
-First, I installed samtools.
-
-```shell
-# Install Samtools
-sudo apt install samtools
-```
-
-Then I converted the alignments to a binary format, which was necessary for sorting.
+Using `samtools`, convert the alignments to a binary format, which is necessary for sorting.
 
 ```shell
 # Convert SAM to BAM
@@ -121,7 +120,7 @@ samtools depth -a sorted_baseline_alignment.bam.gz > baseline_coverage.txt
 samtools depth -a sorted_modified_alignment.bam.gz > modified_coverage.txt
 ```
 
-Steps 3-5 of the solution continue in the `Question 2 - Strategy 1` jupyter notebook.
+Steps 4-6 of the solution continue in the `Question 2 - Strategy 1` jupyter notebook.
 
 **NOTE:** All files generated in the solution pipeline are included in the `data` directory as proof that the solution was executed as documented.
 
