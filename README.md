@@ -57,14 +57,15 @@ Find the region in the toy genome with 2x copy number gain.
     * Readings do not contain optical duplications.
 
 ### Methodology
-The steps to accomplish the task are as follows:
+<!-- The steps to accomplish the task are as follows:
 1. Use existing Burrows-Wheeler implementation (bwa) to align reads with reference genome.
-2. Use Sequence Alignment Map tools (samtools) to determine depth of coverage.
-3. Normalize coverage distributions so that samples can be reliably compared.
-4. Determine copy number for coverage distributions.
-5. Extract region of interest and correlate with gene annotations.
+2. 
+3. Use Sequence Alignment Map tools (samtools) to determine depth of coverage.
+4. Normalize coverage distributions so that samples can be reliably compared.
+5. Determine copy number for coverage distributions.
+6. Extract region of interest and correlate with gene annotations. -->
 
-Steps 1 and 2 were executed using command line tools in WSL Ubuntu.
+<!-- Steps 1 and 2 were executed using command line tools in WSL Ubuntu. -->
 
 #### Step 1 - Align Reads
 First, I installed the bwa command line tool.
@@ -89,7 +90,10 @@ bwa mem toy_genome.fa baseline_reads_R1.fastq baseline_reads_R2.fastq | gzip -3 
 bwa mem toy_genome.fa reads_R1.fastq reads_R2.fastq | gzip -3 > modified_alignment.sam.gz
 ```
 
-#### Step 2 - Determine Coverage Depth
+#### Step 2 - Compute Alignment Statistics and Validity
+Despite the toy genome being a well-behaved and relatively simple example, it's worth it to draft some alignment statitics to determine if the sub-sequent steps will be valid. For the full report, refer to `Question 2 - BWA Alignment QA.MD`.
+
+#### Step 3 - Determine Coverage Depth
 First, I installed samtools.
 
 ```shell
