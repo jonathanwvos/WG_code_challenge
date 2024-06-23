@@ -56,15 +56,13 @@ Find the region in the toy genome with 2x copy number gain.
     * Readings have not been amplied with Polymerase Chain Reactions.
     * Readings do not contain optical duplications.
 
-### Strategy 1
+### Methodology
 The steps to accomplish the task are as follows:
 1. Use existing Burrows-Wheeler implementation (bwa) to align reads with reference genome.
 2. Use Sequence Alignment Map tools (samtools) to determine depth of coverage.
 3. Normalize coverage distributions so that samples can be reliably compared.
 4. Determine copy number for coverage distributions.
-5. Apply bounded filter to remove regions not of interest.
-6. Examine positions of gains within region interest.
-7. Correlate largest contiguous region with gene annotations to find most relevant gene. This will most likely be the gene where the copy gain occurred.
+5. Extract region of interest and correlate with gene annotations.
 
 Steps 1 and 2 were executed using command line tools in WSL Ubuntu.
 
@@ -119,9 +117,9 @@ samtools depth -a sorted_baseline_alignment.bam.gz > baseline_coverage.txt
 samtools depth -a sorted_modified_alignment.bam.gz > modified_coverage.txt
 ```
 
-Steps 3-7 of the solution continue in the `Question 2 - Strategy 1` jupyter notebook.
+Steps 3-5 of the solution continue in the `Question 2 - Strategy 1` jupyter notebook.
 
 **NOTE:** All files generated in the solution pipeline are included in the `data` directory as proof that the solution was executed as documented.
 
-### Strategy 2
-Create custom tools to align reads and compare maps to determine where 2x copy gain is located.
+### Comments and Areas of Improvement
+TODO: Mention how some of the analyses are not generalizable.
