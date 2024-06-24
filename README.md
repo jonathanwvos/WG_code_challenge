@@ -120,9 +120,6 @@ samtools depth -a sorted_baseline_alignment.bam.gz > baseline_coverage.txt
 samtools depth -a sorted_modified_alignment.bam.gz > modified_coverage.txt
 ```
 
-Steps 4-6 of the solution continue in the `Question 2 - Strategy 1` jupyter notebook.
+Steps 4-6 of the solution continue in the `Question 2 - Steps 4-6` jupyter notebook.
 
 **NOTE:** All files generated in the solution pipeline are included in the `data` directory as proof that the solution was executed as documented.
-
-### Comments and Areas of Improvement
-TODO: Mention how some of the analyses are not generalizable.

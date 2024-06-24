@@ -1,7 +1,5 @@
-numpy
-tqdm
-miniFasta
-fastq
-jupyter
-pandas
 matplotlib
+scipy
+pandas
+jupyter
+numpy
